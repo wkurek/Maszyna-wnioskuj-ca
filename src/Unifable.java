@@ -1,4 +1,3 @@
-package PACKAGE_NAME;
-
 public interface Unifable {
+    public SubstitutionSet unify(Unifable expression, SubstitutionSet substitutionSet);
 }
