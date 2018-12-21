@@ -1,24 +1,18 @@
-public class Variable implements Expression, Unifable {
+package model;
+
+public class Variable implements Unifable {
     private static int idCounter = 0;
 
     private int id;
     private String name;
 
-    Variable() {
+    public Variable() {
         this.id = idCounter++;
     }
 
-    Variable(String name) {
+    public Variable(String name) {
         this.name = name;
         this.id = idCounter++;
-    }
-
-    public String toString() {
-        String string = "VARIABLE_";
-
-        if(name != null) string = string.concat(name);
-
-        return string.concat(Integer.toString(id));
     }
 
     @Override
@@ -35,5 +29,19 @@ public class Variable implements Expression, Unifable {
         SubstitutionSet newSubstitutionSet = new SubstitutionSet(substitutionSet);
         newSubstitutionSet.addSubstitution(this, expression);
         return newSubstitutionSet;
+    }
+
+    @Override
+    public Expression replaceVariables(SubstitutionSet substitutionSet) {
+        if(substitutionSet.isBound(this)) return substitutionSet.getBinding(this);
+        else return this;
+    }
+
+    @Override
+    public String toString() {
+        String string = "VAR_";
+        if(name != null) string = string.concat(name.toUpperCase());
+
+        return string.concat(Integer.toString(id));
     }
 }

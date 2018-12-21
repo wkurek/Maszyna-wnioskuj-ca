@@ -1,24 +1,18 @@
-public class Constant implements Expression, Unifable {
+package model;
+
+public class Constant implements Unifable {
     private static int idCounter = 0;
 
     private int id;
     private String name;
 
-    Constant() {
+    public Constant() {
         this.id = idCounter++;
     }
 
-    Constant(String name) {
+    public Constant(String name) {
         this.name = name;
         this.id = idCounter++;
-    }
-
-    public String toString() {
-        String string = "CONSTANT_";
-
-        if(name != null) string = string.concat(name);
-
-        return string.concat(Integer.toString(id));
     }
 
     @Override
@@ -30,5 +24,18 @@ public class Constant implements Expression, Unifable {
         }
 
         return null;
+    }
+
+    @Override
+    public Expression replaceVariables(SubstitutionSet substitutionSet) {
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        String string = "CONST_";
+        if(name != null) string = string.concat(name.toUpperCase());
+
+        return string.concat(Integer.toString(id));
     }
 }
