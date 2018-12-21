@@ -1,6 +1,8 @@
+package model;
+
 import java.util.ArrayList;
 
-public class Predicate implements Expression, Unifable {
+public class Predicate implements Expression, Unifable, Goal {
     private ArrayList<Unifable> arguments;
 
     Predicate(Constant name, ArrayList<Unifable> args) {

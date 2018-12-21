@@ -1,3 +1,5 @@
+package model;
+
 public class Variable implements Expression, Unifable {
     private static int idCounter = 0;
 
