@@ -15,14 +15,6 @@ public class Variable implements Unifable {
         this.id = idCounter++;
     }
 
-    public String toString() {
-        String string = "VARIABLE_";
-
-        if(name != null) string = string.concat(name);
-
-        return string.concat(Integer.toString(id));
-    }
-
     @Override
     public SubstitutionSet unify(Unifable expression, SubstitutionSet substitutionSet) {
         if(expression == this) {
@@ -43,5 +35,13 @@ public class Variable implements Unifable {
     public Expression replaceVariables(SubstitutionSet substitutionSet) {
         if(substitutionSet.isBound(this)) return substitutionSet.getBinding(this);
         else return this;
+    }
+
+    @Override
+    public String toString() {
+        String string = "VAR_";
+        if(name != null) string = string.concat(name.toUpperCase());
+
+        return string.concat(Integer.toString(id));
     }
 }

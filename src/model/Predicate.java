@@ -24,16 +24,6 @@ public class Predicate implements Unifable, Goal {
         return arguments.get(index);
     }
 
-    public String toString() {
-        String string = "";
-
-        for(Unifable expression : arguments) {
-            string = string.concat(expression.toString() + ", ");
-        }
-
-        return "( " + string + ")";
-    }
-
     @Override
     public SubstitutionSet unify(Unifable expression, SubstitutionSet substitutionSet) {
         if((expression instanceof Predicate) && (((Predicate) expression).getSize() == getSize())) {
@@ -65,5 +55,17 @@ public class Predicate implements Unifable, Goal {
         Constant name = (Constant) args.remove(0);
 
         return new Predicate(name, args);
+    }
+
+    @Override
+    public String toString() {
+        String string = "(";
+
+        for(int i = 0; i < getSize(); ++i) {
+            string = string.concat(getArgument(i).toString());
+            if(i != (getSize() - 1)) string = string.concat(", ");
+        }
+
+        return string.concat(")");
     }
 }

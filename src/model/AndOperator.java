@@ -19,7 +19,7 @@ public class AndOperator extends Operator {
         for(int i = 0; i < getOperandsCount(); ++i) {
             string = string.concat(getOpernad(i).toString());
 
-            if(i != getOperandsCount() - 1) string = string.concat(" ^ ");
+            if(i != (getOperandsCount() - 1)) string = string.concat(" ^ ");
         }
 
         return string;

@@ -15,14 +15,6 @@ public class Constant implements Unifable {
         this.id = idCounter++;
     }
 
-    public String toString() {
-        String string = "CONSTANT_";
-
-        if(name != null) string = string.concat(name);
-
-        return string.concat(Integer.toString(id));
-    }
-
     @Override
     public SubstitutionSet unify(Unifable expression, SubstitutionSet substitutionSet) {
         if (expression == this) {
@@ -37,5 +29,13 @@ public class Constant implements Unifable {
     @Override
     public Expression replaceVariables(SubstitutionSet substitutionSet) {
         return this;
+    }
+
+    @Override
+    public String toString() {
+        String string = "CONST_";
+        if(name != null) string = string.concat(name.toUpperCase());
+
+        return string.concat(Integer.toString(id));
     }
 }
