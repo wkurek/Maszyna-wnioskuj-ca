@@ -27,4 +27,9 @@ public class NotOperator extends Operator implements Unifable {
 
         return new NotOperator(predicate);
     }
+
+    @Override
+    public String toString() {
+        return "~" + getFirstOperand().toString();
+    }
 }
