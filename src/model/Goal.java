@@ -1,4 +1,4 @@
 package model;
 
-public interface Goal {
+public interface Goal extends Expression {
 }

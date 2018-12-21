@@ -17,16 +17,20 @@ public class Main {
 
         SubstitutionSet substitutionSet = notPredicate1.unify(notPredicate2, new SubstitutionSet());
 
-        predicate1 = (Predicate) predicate1.replaceVariables(substitutionSet);
-        predicate2 = (Predicate) predicate2.replaceVariables(substitutionSet);
+        //predicate1 = (Predicate) predicate1.replaceVariables(substitutionSet);
+        //predicate2 = (Predicate) predicate2.replaceVariables(substitutionSet);
 
-        notPredicate1 = (NotOperator) notPredicate1.replaceVariables(substitutionSet);
-        notPredicate2 = (NotOperator) notPredicate2.replaceVariables(substitutionSet);
+        //notPredicate1 = (NotOperator) notPredicate1.replaceVariables(substitutionSet);
+       // notPredicate2 = (NotOperator) notPredicate2.replaceVariables(substitutionSet);
 
         AndOperator andOperator = new AndOperator(predicate1, notPredicate2, notPredicate1, predicate2);
+
+        Clausure clausure = new Clausure(predicate1, andOperator);
+        clausure = (Clausure) clausure.replaceVariables(substitutionSet);
 
         System.out.println(notPredicate1);
         System.out.println(predicate2);
         System.out.println(andOperator);
+        System.out.println(clausure);
     }
 }

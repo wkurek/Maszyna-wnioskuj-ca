@@ -32,4 +32,28 @@ class Operator implements Goal {
     Goal getOpernad(int i) {
         return operands.get(i);
     }
+
+    @Override
+    public Expression replaceVariables(SubstitutionSet substitutionSet) {
+        ArrayList<Goal> newOperands = new ArrayList<>();
+
+        for(int i = 0; i < getOperandsCount(); ++i) {
+            newOperands.add((Goal) getOpernad(i).replaceVariables(substitutionSet));
+        }
+
+        return new Operator(newOperands);
+    }
+
+    @Override
+    public String toString() {
+        String string = "";
+
+        for(int i = 0; i < getOperandsCount(); ++i) {
+            string = string.concat(getOpernad(i).toString());
+
+            if(i != (getOperandsCount() - 1)) string = string.concat(" OPERATOR ");
+        }
+
+        return string;
+    }
 }

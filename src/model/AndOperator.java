@@ -24,4 +24,16 @@ public class AndOperator extends Operator {
 
         return string;
     }
+
+
+    @Override
+    public Expression replaceVariables(SubstitutionSet substitutionSet) {
+        ArrayList<Goal> newOperands = new ArrayList<>();
+
+        for(int i = 0; i < getOperandsCount(); ++i) {
+            newOperands.add((Goal) getOpernad(i).replaceVariables(substitutionSet));
+        }
+
+        return new AndOperator(newOperands);
+    }
 }
