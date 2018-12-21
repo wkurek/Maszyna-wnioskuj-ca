@@ -1,16 +1,16 @@
 package model;
 
-public class Constant implements Expression, Unifable {
+public class Constant implements Unifable {
     private static int idCounter = 0;
 
     private int id;
     private String name;
 
-    Constant() {
+    public Constant() {
         this.id = idCounter++;
     }
 
-    Constant(String name) {
+    public Constant(String name) {
         this.name = name;
         this.id = idCounter++;
     }
@@ -32,5 +32,10 @@ public class Constant implements Expression, Unifable {
         }
 
         return null;
+    }
+
+    @Override
+    public Expression replaceVariables(SubstitutionSet substitutionSet) {
+        return this;
     }
 }

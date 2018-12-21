@@ -3,7 +3,7 @@ package model;
 import java.util.Collections;
 
 public class NotOperator extends Operator implements Unifable {
-    NotOperator(Predicate predicate) {
+    public NotOperator(Predicate predicate) {
         super(Collections.singletonList(predicate));
     }
 
@@ -19,5 +19,12 @@ public class NotOperator extends Operator implements Unifable {
         }
 
         return null;
+    }
+
+    @Override
+    public Expression replaceVariables(SubstitutionSet substitutionSet) {
+        Predicate predicate = (Predicate) ((Predicate) getFirstOperand()).replaceVariables(substitutionSet);
+
+        return new NotOperator(predicate);
     }
 }

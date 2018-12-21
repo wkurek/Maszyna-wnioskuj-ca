@@ -1,13 +1,19 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class Predicate implements Expression, Unifable, Goal {
+public class Predicate implements Unifable, Goal {
     private ArrayList<Unifable> arguments;
 
-    Predicate(Constant name, ArrayList<Unifable> args) {
+    public Predicate(Constant name, List<Unifable> args) {
         arguments = new ArrayList<>(args);
         arguments.add(0, name);
+    }
+
+    public Predicate(Constant name, Unifable... args) {
+        this(name, Arrays.asList(args));
     }
 
     private int getSize() {
@@ -39,10 +45,25 @@ public class Predicate implements Expression, Unifable, Goal {
 
                 newSubstitutionSet = unifiable1.unify(unifiable2, newSubstitutionSet);
             }
+
+            return newSubstitutionSet;
         } else if (expression instanceof Variable) {
             return expression.unify(this, substitutionSet);
         }
 
         return null;
+    }
+
+    @Override
+    public Expression replaceVariables(SubstitutionSet substitutionSet) {
+        ArrayList<Unifable> args = new ArrayList<>();
+
+        for(Unifable arg : arguments) {
+            args.add((Unifable) arg.replaceVariables(substitutionSet));
+        }
+
+        Constant name = (Constant) args.remove(0);
+
+        return new Predicate(name, args);
     }
 }

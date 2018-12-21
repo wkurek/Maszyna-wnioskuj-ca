@@ -2,14 +2,14 @@ package model;
 
 import java.util.HashMap;
 
-class SubstitutionSet {
+public class SubstitutionSet {
     private HashMap<Variable, Unifable> substitutions;
 
-    SubstitutionSet(SubstitutionSet substitutionSet) {
+    public SubstitutionSet(SubstitutionSet substitutionSet) {
         substitutions = new HashMap<>(substitutionSet.substitutions);
     }
 
-    SubstitutionSet() {
+    public SubstitutionSet() {
         substitutions = new HashMap<>();
     }
 
