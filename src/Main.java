@@ -92,8 +92,10 @@ public class Main {
 
         SubstitutionSet substitutionSet = new SubstitutionSet();
 
-        substitutionSet = new PredicateNode(knowledgeBase, substitutionSet, predicate23).getSolution();
+        ClausureSet usedClausures = new ClausureSet();
+        substitutionSet = new PredicateNode(knowledgeBase, substitutionSet, predicate23).getSolution(usedClausures);
 
         System.out.println(substitutionSet);
+        System.out.println(usedClausures);
     }
 }

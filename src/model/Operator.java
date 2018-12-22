@@ -48,10 +48,10 @@ public abstract class Operator implements Goal {
     @Override
     public Node getNode(SubstitutionSet substitutionSet, ClausureSet clausureSet) {
         if(!hasTailOperands() && (getFirstOperand() instanceof Conclusion)) {
-            return new PredicateNode(clausureSet, new SubstitutionSet(substitutionSet), this);
+            return new PredicateNode(clausureSet, substitutionSet, this);
         }
 
-        return new AndNode(clausureSet, new SubstitutionSet(substitutionSet), this);
+        return new AndNode(clausureSet, substitutionSet, this);
     }
 
     @Override

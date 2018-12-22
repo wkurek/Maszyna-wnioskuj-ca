@@ -14,7 +14,7 @@ public class AndNode implements Node {
     }
 
     @Override
-    public SubstitutionSet getSolution() {
+    public SubstitutionSet getSolution(ClausureSet solutionClausureSet) {
         for(int i = 0; i < clausureSet.getClousuresCount(); ++i) {
             Clausure clausure = clausureSet.getClausures(i);
             Unifable conclusion = clausure.getConclusion();
@@ -22,12 +22,17 @@ public class AndNode implements Node {
             SubstitutionSet newSubstitutionSet = ((Unifable) currentGoal.getFirstOperand()).unify(conclusion, substitutionSet);
 
             if(newSubstitutionSet != null) {
-                if(!currentGoal.hasTailOperands()) return newSubstitutionSet;
+                if(!currentGoal.hasTailOperands()) {
+                    if(solutionClausureSet == null) solutionClausureSet = new ClausureSet();
+                    solutionClausureSet.add(clausure);
+
+                    return newSubstitutionSet;
+                }
 
                 ClausureSet newClausureSet = new ClausureSet(clausureSet);
                 newClausureSet.remove(i);
 
-                return currentGoal.getTailOperator().getNode(newSubstitutionSet, newClausureSet).getSolution();
+                return currentGoal.getTailOperator().getNode(newSubstitutionSet, newClausureSet).getSolution(solutionClausureSet);
             }
 
         }

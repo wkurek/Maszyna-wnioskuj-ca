@@ -77,6 +77,6 @@ public class Predicate implements Unifable, Goal, Conclusion {
 
     @Override
     public Node getNode(SubstitutionSet substitutionSet, ClausureSet clausureSet) {
-        return new PredicateNode(clausureSet, new SubstitutionSet(substitutionSet), this);
+        return new PredicateNode(clausureSet, substitutionSet, this);
     }
 }

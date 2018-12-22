@@ -27,8 +27,23 @@ public class ClausureSet {
         return clausures.size();
     }
 
+    public void add(Clausure clausure) {
+        clausures.add(clausure);
+    }
+
     public void remove(int i) {
         clausures.remove(i);
     }
 
+    @Override
+    public String toString() {
+        String string = "[";
+
+        for(Clausure clausure : clausures) {
+            string = string.concat(clausure.toString());
+            string = string.concat(",\n");
+        }
+
+        return string.substring(0, string.length() - 2).concat("]");
+    }
 }

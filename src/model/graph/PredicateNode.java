@@ -14,7 +14,7 @@ public class PredicateNode implements Node {
     }
 
     @Override
-    public SubstitutionSet getSolution() {
+    public SubstitutionSet getSolution(ClausureSet solutionClausureSet) {
         for(int i = 0; i < clausureSet.getClousuresCount(); ++i) {
             Clausure clausure = clausureSet.getClausures(i);
             Conclusion conclusion = clausure.getConclusion();
@@ -23,16 +23,20 @@ public class PredicateNode implements Node {
 
             if(newSubstitutionSet != null) {
                 if(!clausure.hasPremise()){
-                    System.out.println(clausure);
+                    if(solutionClausureSet == null) solutionClausureSet = new ClausureSet();
+                    solutionClausureSet.add(clausure);
+
                     return newSubstitutionSet;
                 }
 
                 ClausureSet newClausureSet = new ClausureSet(clausureSet);
                 newClausureSet.remove(i);
 
-                SubstitutionSet result = clausure.getPremise().getNode(newSubstitutionSet, newClausureSet).getSolution();
+                SubstitutionSet result = clausure.getPremise().getNode(newSubstitutionSet, newClausureSet).getSolution(solutionClausureSet);
                 if(result != null) {
-                    System.out.println(clausure);
+                    if(solutionClausureSet == null) solutionClausureSet = new ClausureSet();
+                    solutionClausureSet.add(clausure);
+
                     return result;
                 }
             }
