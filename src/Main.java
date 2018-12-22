@@ -2,6 +2,7 @@ import model.*;
 import model.graph.PredicateNode;
 import model.operator.AndOperator;
 import model.operator.NotOperator;
+import util.printer.ResultPrinter;
 
 public class Main {
     public static void main(String[] args) {
@@ -125,7 +126,6 @@ public class Main {
         ClausureSet usedClausures = new ClausureSet();
         substitutionSet = new PredicateNode(knowledgeBase, substitutionSet, predicate23).getSolution(usedClausures);
 
-        System.out.println(substitutionSet);
-        System.out.println(usedClausures);
+        ResultPrinter.print(usedClausures, substitutionSet);
     }
 }
