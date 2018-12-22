@@ -7,20 +7,28 @@ import java.util.List;
 public class ClausureSet {
     private ArrayList<Clausure> clausures;
 
-    ClausureSet(List<Clausure> clausureArrayList) {
+    public ClausureSet(List<Clausure> clausureArrayList) {
         clausures = new ArrayList<>(clausureArrayList);
     }
 
-    ClausureSet(Clausure... clausures) {
+    public ClausureSet(ClausureSet clausureSet) {
+        clausures = new ArrayList<>(clausureSet.clausures);
+    }
+
+    public ClausureSet(Clausure... clausures) {
         this(Arrays.asList(clausures));
     }
 
-    Clausure getClausures(int i) {
+    public Clausure getClausures(int i) {
         return clausures.get(i);
     }
 
-    int getClousuresCount() {
+    public int getClousuresCount() {
         return clausures.size();
+    }
+
+    public void remove(int i) {
+        clausures.remove(i);
     }
 
 }

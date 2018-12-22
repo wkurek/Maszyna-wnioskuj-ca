@@ -1,48 +1,36 @@
 package model;
 
+import model.graph.AndNode;
+import model.graph.Node;
+import model.graph.PredicateNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
-class Operator implements Goal {
-    private ArrayList<Goal> operands;
+public abstract class Operator implements Goal {
+    ArrayList<Goal> operands;
 
     Operator(List<Goal> operands) {
         this.operands = new ArrayList<>(operands);
     }
 
-    Goal getFirstOperand() {
+    public Goal getFirstOperand() {
         return operands.get(0);
     }
 
-    Operator getTailOperator() {
-        ArrayList<Goal> tailOpernads = new ArrayList<>(operands);
-        tailOpernads.remove(0); //remove first operand
-
-        return new Operator(tailOpernads);
-    }
-
-    boolean hasTailOperands() {
+    public boolean hasTailOperands() {
         return operands.size() > 1;
     }
 
-    int getOperandsCount() {
+    public int getOperandsCount() {
         return operands.size();
     }
 
-    Goal getOpernad(int i) {
+    public Goal getOpernad(int i) {
         return operands.get(i);
     }
 
-    @Override
-    public Expression replaceVariables(SubstitutionSet substitutionSet) {
-        ArrayList<Goal> newOperands = new ArrayList<>();
-
-        for(int i = 0; i < getOperandsCount(); ++i) {
-            newOperands.add((Goal) getOpernad(i).replaceVariables(substitutionSet));
-        }
-
-        return new Operator(newOperands);
-    }
+    public abstract Operator getTailOperator();
 
     @Override
     public String toString() {
@@ -56,4 +44,17 @@ class Operator implements Goal {
 
         return string;
     }
+
+    @Override
+    public Node getNode(SubstitutionSet substitutionSet, ClausureSet clausureSet) {
+        if(!hasTailOperands() && (getFirstOperand() instanceof Conclusion)) {
+            return new PredicateNode(clausureSet, new SubstitutionSet(substitutionSet), this);
+        }
+
+        return new AndNode(clausureSet, new SubstitutionSet(substitutionSet), this);
+    }
+
+    @Override
+    public abstract Expression replaceVariables(SubstitutionSet substitutionSet);
+
 }

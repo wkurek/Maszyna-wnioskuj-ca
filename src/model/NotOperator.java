@@ -2,7 +2,7 @@ package model;
 
 import java.util.Collections;
 
-public class NotOperator extends Operator implements Unifable {
+public class NotOperator extends Operator implements Unifable, Conclusion {
     public NotOperator(Predicate predicate) {
         super(Collections.singletonList(predicate));
     }
@@ -29,7 +29,19 @@ public class NotOperator extends Operator implements Unifable {
     }
 
     @Override
+    public Operator getTailOperator() {
+        return null;
+    }
+
+    @Override
     public String toString() {
         return "~" + getFirstOperand().toString();
+    }
+
+    @Override
+    public Unifable getArgument(int index) {
+        Conclusion predicate = (Conclusion) getFirstOperand();
+
+        return predicate.getArgument(index);
     }
 }

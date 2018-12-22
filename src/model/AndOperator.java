@@ -13,6 +13,14 @@ public class AndOperator extends Operator {
     }
 
     @Override
+    public Operator getTailOperator() {
+        ArrayList<Goal> tailOpernads = new ArrayList<>(operands);
+        tailOpernads.remove(0); //remove first operand
+
+        return new AndOperator(tailOpernads);
+    }
+
+    @Override
     public String toString() {
         String string = "";
 

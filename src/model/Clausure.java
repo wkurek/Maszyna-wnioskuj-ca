@@ -1,23 +1,23 @@
 package model;
 
 public class Clausure implements Expression {
-    private Predicate conclusion;
+    private Conclusion conclusion;
     private Goal premise;
 
-    public Clausure(Predicate predicate, Goal goal) {
-        conclusion = predicate;
+    public Clausure(Conclusion conc, Goal goal) {
+        conclusion = conc;
         premise = goal;
     }
 
-    Predicate getConclusion() {
+    public Conclusion getConclusion() {
         return conclusion;
     }
 
-    Goal getPremise() {
+    public Goal getPremise() {
         return premise;
     }
 
-    private boolean hasPremise() {
+    public boolean hasPremise() {
         return premise != null;
     }
 
