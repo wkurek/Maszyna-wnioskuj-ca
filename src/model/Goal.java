@@ -1,4 +1,7 @@
 package model;
 
-public interface Goal {
+import model.graph.Node;
+
+public interface Goal extends Expression {
+    Node getNode(SubstitutionSet substitutionSet, ClausureSet clausureSet);
 }

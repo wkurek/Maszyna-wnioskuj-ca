@@ -42,6 +42,6 @@ public class Variable implements Unifable {
         String string = "VAR_";
         if(name != null) string = string.concat(name.toUpperCase());
 
-        return string.concat(Integer.toString(id));
+        return string.concat("_" + id);
     }
 }
