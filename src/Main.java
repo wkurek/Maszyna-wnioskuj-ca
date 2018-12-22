@@ -1,5 +1,6 @@
 import model.*;
 import model.graph.PredicateNode;
+import model.operator.AndOperator;
 import model.operator.NotOperator;
 
 public class Main {
@@ -24,7 +25,7 @@ public class Main {
         Variable x8 = new Variable("x8");
         Variable x9 = new Variable("x9");
 
-
+/*
         //1a) NKOCHA(x0,Wspin) ⇒ KOCHA(x0,Narty)
         NotOperator predicate1 = new NotOperator(new Predicate(KOCHA, x0, Wspin));
         Predicate predicate2 = new Predicate(KOCHA, x0, Narty);
@@ -89,6 +90,35 @@ public class Main {
 
         ClausureSet knowledgeBase = new ClausureSet(clausure1, clausure2, clausure3, clausure4, clausure5, clausure6, clausure7,
                 clausure8, clausure9, clausure10, clausure11, clausure12);
+
+
+        */
+
+        //7) KOCHA(Babacki,Wspin) <---- DOWÓD
+        Predicate predicate23 = new Predicate(KOCHA, Babacki, Wspin);
+
+
+        NotOperator predicate3 = new NotOperator(new Predicate(KOCHA, x1, Narty));
+        NotOperator predicate2 = new NotOperator(new Predicate(LUBI, x1, Descz));
+        Predicate predicate1 = new Predicate(KOCHA, x1, Snieg);
+        AndOperator andOperator = new AndOperator(predicate1, predicate2, predicate3);
+        Predicate predicate4 = new Predicate(KOCHA, x1, Wspin);
+        Clausure clausure1 = new Clausure(predicate4, andOperator);
+
+        NotOperator predicate5 = new NotOperator(new Predicate(KOCHA, Babacki, Narty));
+        Clausure clausure2 = new Clausure(predicate5, null);
+
+        NotOperator predicate6 = new NotOperator(new Predicate(LUBI, x3, Descz));
+        Predicate predicate7 = new Predicate(LUBI, Abacki, x3);
+        Clausure clausure3 = new Clausure(predicate6, predicate7);
+
+        Predicate predicate8 = new Predicate(LUBI, Abacki, Babacki);
+        Clausure clausure4 = new Clausure(predicate8, null);
+
+        Predicate predicate9 = new Predicate(KOCHA, Babacki, Snieg);
+        Clausure clausure5 = new Clausure(predicate9, null);
+
+        ClausureSet knowledgeBase = new ClausureSet(clausure1, clausure2, clausure3, clausure4, clausure5);
 
 
         SubstitutionSet substitutionSet = new SubstitutionSet();
