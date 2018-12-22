@@ -36,6 +36,8 @@ public class SubstitutionSet {
 
     @Override
     public String toString() {
+        if(substitutions.isEmpty()) return "[]";
+
         String string = "{";
 
         for(Map.Entry<Variable, Unifable> substitution : substitutions.entrySet()) {

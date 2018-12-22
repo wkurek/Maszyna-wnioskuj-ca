@@ -37,6 +37,8 @@ public class ClausureSet {
 
     @Override
     public String toString() {
+        if(clausures.isEmpty()) return "[]";
+
         String string = "[";
 
         for(Clausure clausure : clausures) {
