@@ -1,9 +1,7 @@
 package model.operator;
 
 import model.*;
-import model.graph.AndNode;
 import model.graph.Node;
-import model.graph.PredicateNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +17,15 @@ public abstract class Operator implements Goal {
         return operands.get(0);
     }
 
-    public boolean hasTailOperands() {
+    boolean hasTailOperands() {
         return operands.size() > 1;
     }
 
-    public int getOperandsCount() {
+    int getOperandsCount() {
         return operands.size();
     }
 
-    public Goal getOpernad(int i) {
+    Goal getOpernad(int i) {
         return operands.get(i);
     }
 
@@ -46,18 +44,9 @@ public abstract class Operator implements Goal {
         return string;
     }
 
+
     @Override
-    public Node getNode(SubstitutionSet substitutionSet, ClausureSet clausureSet) {
-        if(!hasTailOperands() && (this instanceof NotOperator)) {
-            return new PredicateNode(clausureSet, substitutionSet, this);
-        }
-
-        if(!hasTailOperands() && (getFirstOperand() instanceof Conclusion)) {
-            return new PredicateNode(clausureSet, substitutionSet, getFirstOperand());
-        }
-
-        return new AndNode(clausureSet, substitutionSet, this);
-    }
+    public abstract Node getNode(SubstitutionSet substitutionSet, ClausureSet clausureSet);
 
     @Override
     public abstract Expression replaceVariables(SubstitutionSet substitutionSet);

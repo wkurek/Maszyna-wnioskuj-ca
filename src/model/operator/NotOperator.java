@@ -1,6 +1,8 @@
 package model.operator;
 
 import model.*;
+import model.graph.Node;
+import model.graph.PredicateNode;
 
 import java.util.Collections;
 
@@ -45,5 +47,10 @@ public class NotOperator extends Operator implements Unifable, Conclusion {
         Conclusion predicate = (Conclusion) getFirstOperand();
 
         return predicate.getArgument(index);
+    }
+
+    @Override
+    public Node getNode(SubstitutionSet substitutionSet, ClausureSet clausureSet) {
+        return new PredicateNode(clausureSet, substitutionSet, this);
     }
 }

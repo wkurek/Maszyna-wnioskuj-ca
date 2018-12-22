@@ -1,14 +1,15 @@
 package model.operator;
 
-import model.Expression;
-import model.Goal;
-import model.SubstitutionSet;
+import model.*;
+import model.graph.AndNode;
+import model.graph.Node;
+import model.graph.PredicateNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AndOperator extends Operator {
-    public AndOperator(ArrayList<Goal> operands) {
+    AndOperator(ArrayList<Goal> operands) {
         super(operands);
     }
 
@@ -47,5 +48,14 @@ public class AndOperator extends Operator {
         }
 
         return new AndOperator(newOperands);
+    }
+
+    @Override
+    public Node getNode(SubstitutionSet substitutionSet, ClausureSet clausureSet) {
+        if(!hasTailOperands() && (getFirstOperand() instanceof Conclusion)) {
+            return new PredicateNode(clausureSet, substitutionSet, getFirstOperand());
+        }
+
+        return new AndNode(clausureSet, substitutionSet, this);
     }
 }

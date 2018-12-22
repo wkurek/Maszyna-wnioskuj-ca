@@ -25,7 +25,7 @@ public class Main {
         Variable x8 = new Variable("x8");
         Variable x9 = new Variable("x9");
 
-/*
+
         //1a) NKOCHA(x0,Wspin) ⇒ KOCHA(x0,Narty)
         NotOperator predicate1 = new NotOperator(new Predicate(KOCHA, x0, Wspin));
         Predicate predicate2 = new Predicate(KOCHA, x0, Narty);
@@ -92,9 +92,8 @@ public class Main {
                 clausure8, clausure9, clausure10, clausure11, clausure12);
 
 
-        */
 
-        //7) KOCHA(Babacki,Wspin) <---- DOWÓD
+       /* //7) KOCHA(Babacki,Wspin) <---- DOWÓD
         Predicate predicate23 = new Predicate(KOCHA, Babacki, Wspin);
 
 
@@ -118,7 +117,7 @@ public class Main {
         Predicate predicate9 = new Predicate(KOCHA, Babacki, Snieg);
         Clausure clausure5 = new Clausure(predicate9, null);
 
-        ClausureSet knowledgeBase = new ClausureSet(clausure1, clausure2, clausure3, clausure4, clausure5);
+        ClausureSet knowledgeBase = new ClausureSet(clausure1, clausure2, clausure3, clausure4, clausure5);*/
 
 
         SubstitutionSet substitutionSet = new SubstitutionSet();
