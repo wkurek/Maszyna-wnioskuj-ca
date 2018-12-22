@@ -1,6 +1,7 @@
 package model.graph;
 
 import model.*;
+import model.operator.Operator;
 
 public class AndNode implements Node {
     private ClausureSet clausureSet;

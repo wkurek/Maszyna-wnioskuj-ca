@@ -1,5 +1,6 @@
 import model.*;
 import model.graph.PredicateNode;
+import model.operator.NotOperator;
 
 public class Main {
     public static void main(String[] args) {

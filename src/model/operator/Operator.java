@@ -1,5 +1,6 @@
-package model;
+package model.operator;
 
+import model.*;
 import model.graph.AndNode;
 import model.graph.Node;
 import model.graph.PredicateNode;

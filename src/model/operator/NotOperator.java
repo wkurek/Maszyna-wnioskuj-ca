@@ -1,4 +1,6 @@
-package model;
+package model.operator;
+
+import model.*;
 
 import java.util.Collections;
 

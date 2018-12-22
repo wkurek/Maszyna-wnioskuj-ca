@@ -1,4 +1,8 @@
-package model;
+package model.operator;
+
+import model.Expression;
+import model.Goal;
+import model.SubstitutionSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
