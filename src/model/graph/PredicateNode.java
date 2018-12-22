@@ -23,6 +23,7 @@ public class PredicateNode implements Node {
 
             if(newSubstitutionSet != null) {
                 if(!clausure.hasPremise()){
+                    System.out.println(clausure);
                     return newSubstitutionSet;
                 }
 
@@ -31,6 +32,7 @@ public class PredicateNode implements Node {
 
                 SubstitutionSet result = clausure.getPremise().getNode(newSubstitutionSet, newClausureSet).getSolution();
                 if(result != null) {
+                    System.out.println(clausure);
                     return result;
                 }
             }

@@ -89,7 +89,6 @@ public class Main {
         ClausureSet knowledgeBase = new ClausureSet(clausure1, clausure2, clausure3, clausure4, clausure5, clausure6, clausure7,
                 clausure8, clausure9, clausure10, clausure11, clausure12);
 
-        //ClausureSet knowledgeBase = new ClausureSet(clausure1, clausure2, clausure3, clausure4, clausure5, clausure6, clausure7, clausure7, clausure11);
 
         SubstitutionSet substitutionSet = new SubstitutionSet();
 
