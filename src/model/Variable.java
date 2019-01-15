@@ -15,6 +15,10 @@ public class Variable implements Unifable {
         this.id = idCounter++;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public SubstitutionSet unify(Unifable expression, SubstitutionSet substitutionSet) {
         if(expression == this) {
