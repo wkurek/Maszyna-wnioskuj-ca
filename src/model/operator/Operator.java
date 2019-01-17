@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Operator implements Goal {
-    ArrayList<Goal> operands;
+    ArrayList<Predicate> operands;
 
-    Operator(List<Goal> operands) {
+    Operator(List<Predicate> operands) {
         this.operands = new ArrayList<>(operands);
     }
 
-    public Goal getFirstOperand() {
+    public Predicate getFirstOperand() {
         return operands.get(0);
     }
 
@@ -25,7 +25,7 @@ public abstract class Operator implements Goal {
         return operands.size();
     }
 
-    Goal getOpernad(int i) {
+    Predicate getOperand(int i) {
         return operands.get(i);
     }
 
@@ -36,7 +36,7 @@ public abstract class Operator implements Goal {
         String string = "";
 
         for(int i = 0; i < getOperandsCount(); ++i) {
-            string = string.concat(getOpernad(i).toString());
+            string = string.concat(getOperand(i).toString());
 
             if(i != (getOperandsCount() - 1)) string = string.concat(" OPERATOR ");
         }
