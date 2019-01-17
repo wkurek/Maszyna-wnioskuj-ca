@@ -88,6 +88,8 @@ public class ClausuresParser implements Parser {
                 String[] splitted_predicates = premise_line.split("[\\^]");
 
                 for (String s : splitted_predicates) {
+                    if(s.charAt(0)=='(')
+                        s=s.substring(1);
                     String[] expressions = s.split("[(),]");
                     Constant predicate_name = getConstant(constants, expressions[0]);
                     List<Unifable> arguments = new ArrayList<>();
