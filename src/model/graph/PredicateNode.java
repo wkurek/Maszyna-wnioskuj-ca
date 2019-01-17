@@ -34,7 +34,9 @@ public class PredicateNode implements Node {
 
                 SubstitutionSet result = clausure.getPremise().getNode(newSubstitutionSet, newClausureSet).getSolution(solutionClausureSet);
                 if(result != null) {
-                    if(solutionClausureSet == null) solutionClausureSet = new ClausureSet();
+                    if(solutionClausureSet == null)
+                        solutionClausureSet = new ClausureSet();
+
                     solutionClausureSet.add(clausure);
 
                     return result;

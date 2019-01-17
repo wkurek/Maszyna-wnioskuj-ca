@@ -141,19 +141,19 @@ public class Main {
                 }
 
                 if(npredicate1 != null && predicate2 != null ){
-                    clausures.add(new Clausure(npredicate1, predicate2));
+                    clausures.add(new Clausure(predicate2,npredicate1));
                 }
 
                 if(npredicate1 != null && npredicate2 != null ){
-                    clausures.add(new Clausure(npredicate1, npredicate2));
+                    clausures.add(new Clausure(npredicate2, npredicate1));
                 }
 
                 if(predicate1 != null && npredicate2 != null ){
-                    clausures.add(new Clausure(predicate1, npredicate2));
+                    clausures.add(new Clausure(npredicate2, predicate1));
                 }
 
                 if(predicate1 != null && predicate2 != null ){
-                    clausures.add(new Clausure(predicate1, predicate2));
+                    clausures.add(new Clausure(predicate2, predicate1));
                 }
             }
 
