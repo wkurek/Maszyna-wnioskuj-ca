@@ -26,7 +26,10 @@ public class ClausuresParser implements Parser {
 
         List<Constant> resultSet = new ArrayList<>();
         for (String s : lines_constant) {
-            resultSet.add(new Constant(s));
+            if(s.matches("[A-Z]+$"))
+                resultSet.add(new Constant(s, true));
+            else
+                resultSet.add(new Constant(s, false));
         }
         return resultSet;
     }
@@ -36,7 +39,7 @@ public class ClausuresParser implements Parser {
         String filePath_variable = new File(filePath).getAbsolutePath();
         FileReader fileReader_variable = new FileReader(filePath_variable);
         BufferedReader bufferedReader_variable = new BufferedReader(fileReader_variable);
-        ArrayList<String> lines_variable = new ArrayList<String>();
+        ArrayList<String> lines_variable = new ArrayList<>();
         String line_read_variable = null;
         while ((line_read_variable = bufferedReader_variable.readLine()) != null) {
             lines_variable.add(line_read_variable);
@@ -88,6 +91,8 @@ public class ClausuresParser implements Parser {
                 String[] splitted_predicates = premise_line.split("[\\^]");
 
                 for (String s : splitted_predicates) {
+                    if(s.charAt(0)=='(')
+                        s=s.substring(1);
                     String[] expressions = s.split("[(),]");
                     Constant predicate_name = getConstant(constants, expressions[0]);
                     List<Unifable> arguments = new ArrayList<>();

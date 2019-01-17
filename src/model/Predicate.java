@@ -65,9 +65,9 @@ public class Predicate implements Unifable, Goal, Conclusion {
 
     @Override
     public String toString() {
-        String string = "(";
+        String string = arguments.get(0).toString() + "(";
 
-        for(int i = 0; i < getSize(); ++i) {
+        for(int i = 1; i < getSize(); ++i) {
             string = string.concat(getArgument(i).toString());
             if(i != (getSize() - 1)) string = string.concat(", ");
         }

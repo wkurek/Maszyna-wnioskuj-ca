@@ -3,10 +3,13 @@ package model;
 public class Clausure implements Expression {
     private Conclusion conclusion;
     private Goal premise;
+    private int ID;
+    private static int count = 0;
 
     public Clausure(Conclusion conc, Goal goal) {
         conclusion = conc;
         premise = goal;
+        ID=++count;
     }
 
     public Conclusion getConclusion() {
@@ -38,6 +41,21 @@ public class Clausure implements Expression {
             string = string.concat(premise.toString());
         }
 
+        return string;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public String toString2() {
+
+        String string="";
+        if(hasPremise()) {
+            string = string.concat(premise.toString());
+            string = string.concat(" => ");
+        }
+        string = string.concat(conclusion.toString());
         return string;
     }
 }

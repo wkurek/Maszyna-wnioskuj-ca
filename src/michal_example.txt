@@ -1,6 +1,4 @@
 (LUBI(Michal,x9)^LUBI(Jakub,x9))=>LUBI(Wojtek,x9)
-(LUBI(Michal,x9)^NLUBI(Wojtek,x9))=>NLUBI(Jakub,x9)
-(LUBI(Jakub,x9)^NLUBI(Wojtek,x9))=>NLUBI(Michal,x9)
 LUBI(x10,Java)=>LUBI(x10,Python)
 LUBI(Michal,Java)
 LUBI(Jakub,Python)

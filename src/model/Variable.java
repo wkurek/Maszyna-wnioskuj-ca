@@ -43,8 +43,8 @@ public class Variable implements Unifable {
 
     @Override
     public String toString() {
-        String string = "VAR_";
-        if(name != null) string = string.concat(name.toUpperCase());
+        String string = "";
+        if(name != null) string = string.concat(name);
 
         return string.concat("_" + id);
     }

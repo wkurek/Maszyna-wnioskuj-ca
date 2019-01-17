@@ -22,10 +22,11 @@ public class Main {
         ClausureSet knowledgeBase;
 
         ClausuresParser parser = new ClausuresParser();
-        constants = parser.getConstants("src/michal_example_constant.txt");
-        variables = parser.getVariables("src/michal_example_variables.txt");
-        predicateToProve = parser.getPredicateToProve("src/michal_to_prove.txt", constants, variables);
-        knowledgeBase = parser.getClausures("src/michal_example.txt", constants, variables);
+        constants = parser.getConstants("src/example_constant");
+        variables = parser.getVariables("src/example_variables");
+        predicateToProve = parser.getPredicateToProve("src/example_to_prove", constants, variables);
+        knowledgeBase = parser.getClausures("src/examples", constants, variables);
+        extendKnowledgeBase(knowledgeBase);
 
 
         SubstitutionSet substitutionSet = new SubstitutionSet();
@@ -33,13 +34,17 @@ public class Main {
 
         substitutionSet = new PredicateNode(knowledgeBase, substitutionSet, predicateToProve).getSolution(usedClausures);
 
-        ResultPrinter.print(usedClausures, substitutionSet);
+        ResultPrinter.print(knowledgeBase, predicateToProve, usedClausures, substitutionSet);
 
         System.out.print("END");
     }
 
+    private static void extendKnowledgeBase(ClausureSet knowledgeBase) {
+        for(int i = 0; i<knowledgeBase.getClousuresCount(); i++)
+        {
 
-
+        }
+    }
 
 
 }
