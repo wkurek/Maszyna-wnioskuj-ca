@@ -63,15 +63,15 @@ public class ClausureSet {
         return string.substring(0, string.length() - 2).concat(")");
     }
 
-    public String toString3() {
+    public String toString3(SubstitutionSet substitutionSet) {
         if(clausures.isEmpty()) return "";
         ArrayList<Clausure> reversed = new ArrayList<>(clausures);
         Collections.reverse(reversed);
         String string = "";
-        string=string.concat("K"+reversed.get(0).getID());
+        string=string.concat(((Clausure)reversed.get(0).replaceVariables(substitutionSet)).getConclusion().toString());
         for(int i = 1; i<reversed.size(); i++) {
-            string=string.concat("<=");
-            string = string.concat("K"+reversed.get(i).getID());
+            string=string.concat(" <= ");
+            string = string.concat(((Clausure)reversed.get(i).replaceVariables(substitutionSet)).getConclusion().toString());
         }
         return string;
     }

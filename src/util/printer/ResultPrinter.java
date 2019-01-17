@@ -11,6 +11,6 @@ public class ResultPrinter {
         System.out.println("\nTeza: "+predicateToProve.toString());
         System.out.println("\nZbiór podstawień: "+substitutionSet);
         System.out.println("\nUżyte klauzule:\n"+usedClausures.toString2());
-        System.out.println("\nGraf wnioskowania:\n"+usedClausures.toString3());
+        System.out.println("\nGraf wnioskowania:\n"+usedClausures.toString3(substitutionSet));
     }
 }

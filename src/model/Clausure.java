@@ -27,7 +27,9 @@ public class Clausure implements Expression {
     @Override
     public Expression replaceVariables(SubstitutionSet substitutionSet) {
         Predicate predicate = (Predicate) conclusion.replaceVariables(substitutionSet);
-        Goal goal = (Goal) premise.replaceVariables(substitutionSet);
+        Goal goal=null;
+        if(premise!=null)
+          goal = (Goal) premise.replaceVariables(substitutionSet);
 
         return new Clausure(predicate, goal);
     }
