@@ -20,6 +20,18 @@ public class Predicate implements Unifable, Goal, Conclusion {
         this(name, Arrays.asList(args));
     }
 
+    public Predicate(Predicate old)
+    {
+        arguments = new ArrayList<>();
+        for(Unifable u : old.getArguments())
+        {
+            if(u instanceof Constant)
+                arguments.add(u);
+
+            else if(u instanceof Variable)
+                arguments.add(new Variable((Variable)u));
+        }
+    }
     private int getSize() {
         return arguments.size();
     }
@@ -78,5 +90,9 @@ public class Predicate implements Unifable, Goal, Conclusion {
     @Override
     public Node getNode(SubstitutionSet substitutionSet, ClausureSet clausureSet) {
         return new PredicateNode(clausureSet, substitutionSet, this);
+    }
+
+    public ArrayList<Unifable> getArguments() {
+        return arguments;
     }
 }

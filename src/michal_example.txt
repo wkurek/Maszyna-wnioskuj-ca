@@ -2,3 +2,4 @@
 LUBI(x10,Java)=>LUBI(x10,Python)
 LUBI(Michal,Java)
 LUBI(Jakub,Python)
+~LUBI(x11,Python)=>~LUBI(x11,Java)

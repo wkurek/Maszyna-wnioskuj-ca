@@ -14,9 +14,27 @@ public class Variable implements Unifable {
         this.name = name;
         this.id = idCounter++;
     }
+    public Variable(Variable v)
+    {
+        this.name = v.name;
+        this.id=v.id;
+    }
 
     public String getName() {
         return name;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public static int getIdCounter() {
+        return idCounter;
+    }
+
+
+    public static void setIdCounter(int idCounter) {
+        Variable.idCounter = idCounter;
     }
 
     @Override

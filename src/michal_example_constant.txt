@@ -1,5 +1,5 @@
 LUBI
-NLUBI
+~LUBI
 Java
 Python
 Jakub

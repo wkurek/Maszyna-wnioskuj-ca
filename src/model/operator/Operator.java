@@ -21,11 +21,11 @@ public abstract class Operator implements Goal {
         return operands.size() > 1;
     }
 
-    int getOperandsCount() {
+    public int getOperandsCount() {
         return operands.size();
     }
 
-    Predicate getOperand(int i) {
+    public Predicate getOperand(int i) {
         return operands.get(i);
     }
 

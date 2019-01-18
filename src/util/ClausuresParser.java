@@ -26,7 +26,7 @@ public class ClausuresParser implements Parser {
 
         List<Constant> resultSet = new ArrayList<>();
         for (String s : lines_constant) {
-            if(s.matches("[A-Z]+$"))
+            if(s.matches("[A-Z~]+$"))
                 resultSet.add(new Constant(s, true));
             else
                 resultSet.add(new Constant(s, false));
@@ -153,7 +153,7 @@ public class ClausuresParser implements Parser {
         return true;
     }
 
-    private Constant getConstant(List<Constant> set, String name){
+    public static Constant getConstant(List<Constant> set, String name){
         for (Constant constant : set) {
             if (constant.getName().equals(name)) {
                 return constant;

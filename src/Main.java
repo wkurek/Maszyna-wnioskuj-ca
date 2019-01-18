@@ -1,7 +1,9 @@
 import model.*;
+import model.graph.AndNode;
 import model.graph.PredicateNode;
 import model.operator.AndOperator;
 import model.operator.NotOperator;
+import model.operator.Operator;
 import util.ClausuresParser;
 import util.printer.ResultPrinter;
 
@@ -22,11 +24,11 @@ public class Main {
         ClausureSet knowledgeBase;
 
         ClausuresParser parser = new ClausuresParser();
-        constants = parser.getConstants("src/example_constant");
-        variables = parser.getVariables("src/example_variables");
-        predicateToProve = parser.getPredicateToProve("src/example_to_prove", constants, variables);
-        knowledgeBase = parser.getClausures("src/examples", constants, variables);
-        extendKnowledgeBase(knowledgeBase);
+        constants = parser.getConstants("src/michal_example_constant.txt");
+        variables = parser.getVariables("src/michal_example_variables.txt");
+        predicateToProve = parser.getPredicateToProve("src/michal_to_prove.txt", constants, variables);
+        knowledgeBase = parser.getClausures("src/michal_example.txt", constants, variables);
+        extendKnowledgeBase(knowledgeBase, constants);
 
 
         SubstitutionSet substitutionSet = new SubstitutionSet();
@@ -39,11 +41,51 @@ public class Main {
         System.out.print("END");
     }
 
-    private static void extendKnowledgeBase(ClausureSet knowledgeBase) {
+    private static void extendKnowledgeBase(ClausureSet knowledgeBase, List<Constant> constants) {//A=>B, więc trzeba dodać -B=>-A
+        int end = knowledgeBase.getClousuresCount();
+        for(int i = 0; i<end; i++)
+        {
+            if(knowledgeBase.getClausures(i).hasPremise())
+            {
+                ClausureSet allExtensions = knowledgeBase.getClausures(i).generateExtensions();
+                for(int k = 0; k<allExtensions.getClousuresCount(); k++)
+                {
+                    if(!existsExtendedClausure(knowledgeBase, allExtensions.getClausures(k)))
+                    {
+                        knowledgeBase.add(allExtensions.getClausures(k));
+                        if(ClausuresParser.getConstant(constants, allExtensions.getClausures(k).getConclusion().getArgument(0).toString())==null)
+                        {   //There is no negated predicate in constants (conclusion)
+                            constants.add(new Constant(allExtensions.getClausures(k).getConclusion().getArgument(0).toString(), true));
+                        }
+                        if(allExtensions.getClausures(k).getPremise() instanceof Operator) {
+                            for (int j = 0; j > ((Operator) allExtensions.getClausures(k).getPremise()).getOperandsCount(); j++)
+                            {
+                                if(ClausuresParser.getConstant(constants,((Operator)allExtensions.getClausures(k).getPremise()).getOperand(j).getArgument(0).toString())==null)
+                                //There is no negated predicate in constants (premise)
+                                {
+                                    constants.add(new Constant(((Operator)allExtensions.getClausures(k).getPremise()).getOperand(j).getArgument(0).toString(), true));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if(ClausuresParser.getConstant(constants, allExtensions.getClausures(k).getPremise().toString())==null)
+                                constants.add(new Constant(allExtensions.getClausures(k).getPremise().toString(), true));
+                        }
+                    }//there is no Clausure like the generated one yet
+                }//for through all combinations
+
+            }//if hasPremise
+        }//for knowledgeSet
+    }
+
+    private static boolean existsExtendedClausure(ClausureSet knowledgeBase, Clausure clausure) {
         for(int i = 0; i<knowledgeBase.getClousuresCount(); i++)
         {
-
+            if(clausure.sameAs(knowledgeBase.getClausures(i)))
+                return true;
         }
+        return false;
     }
 
 
