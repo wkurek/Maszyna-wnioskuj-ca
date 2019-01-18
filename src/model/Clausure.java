@@ -2,6 +2,7 @@ package model;
 
 import model.operator.AndOperator;
 import model.operator.Operator;
+import util.ClausuresParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,7 @@ public class Clausure implements Expression {
         return string;
     }
 
-    public ClausureSet generateExtensions() {
+    public ClausureSet generateExtensions(List<Constant> constants) {
         ClausureSet clausureSet = new ClausureSet();
         if(this.getPremise() instanceof Operator)
         {
@@ -89,13 +90,14 @@ public class Clausure implements Expression {
                     if (pre.getArgument(j) instanceof Variable)
                         ((Variable) pre.getArgument(j)).setId(Variable.getIdCounter() + 1);
 
-                premise_predicates.add(negate(pre));
+                premise_predicates.add(negate(pre, constants));
                 Predicate temporary = new Predicate(((Operator) this.getPremise()).getOperand(i));
                 for (int j = 0; j < temporary.getArguments().size(); j++)
                     if (temporary.getArgument(j) instanceof Variable)
                         ((Variable) temporary.getArgument(j)).setId(Variable.getIdCounter() + 1);
 
-                Clausure clausure = new Clausure(negate(temporary), new AndOperator(premise_predicates));
+                Clausure clausure = new Clausure(negate(temporary, constants), new AndOperator(premise_predicates));
+                fixVariables(clausure);
                 clausureSet.add(clausure);
                 Variable.setIdCounter(Variable.getIdCounter()+1);
             }
@@ -107,23 +109,53 @@ public class Clausure implements Expression {
                 if (pre.getArgument(j) instanceof Variable)
                     ((Variable) pre.getArgument(j)).setId(Variable.getIdCounter() + 1);
 
-            Variable.setIdCounter(Variable.getIdCounter()+1);
+
             Predicate temporary = new Predicate((Predicate)this.getConclusion());
             for (int j = 0; j < temporary.getArguments().size(); j++)
                 if (temporary.getArgument(j) instanceof Variable)
                     ((Variable) temporary.getArgument(j)).setId(Variable.getIdCounter() + 1);
 
-            Clausure clausure = new Clausure(negate(pre), negate(temporary));
+            Clausure clausure = new Clausure(negate(pre, constants), negate(temporary, constants));
+            fixVariables(clausure);
+            Variable.setIdCounter(Variable.getIdCounter()+1);
             clausureSet.add(clausure);
 
         }
         return clausureSet;
     }
 
-    private Predicate negate(Predicate predicate) {
+    private void fixVariables(Clausure clausure) {
+        List<Predicate> predicates = new ArrayList<>();
+        if(clausure.hasPremise()) {
+            if (clausure.getPremise() instanceof AndOperator)
+                for (int k = 0; k < ((AndOperator) clausure.getPremise()).getOperandsCount(); k++)
+                    predicates.add(((AndOperator) clausure.getPremise()).getOperand(k));
+            else
+                predicates.add(((Predicate) clausure.getPremise()));
+        }
+        predicates.add((Predicate)clausure.getConclusion());
+        for(int i = 0; i<predicates.size();i++)
+        {
+            for(int k = i; k<predicates.size(); k++)
+            {
+                for(int j = 0; j<predicates.get(i).getArguments().size(); j++)
+                {
+                    for(int g = 0; g<predicates.get(k).getArguments().size(); g++)
+                    {
+                        if(predicates.get(i).getArgument(j) instanceof Variable && predicates.get(k).getArgument(g) instanceof Variable)
+                            if((predicates.get(i).getArgument(j)).toString().equals((predicates.get(k).getArgument(g)).toString()))
+                                predicates.get(k).getArguments().set(g, predicates.get(i).getArgument(j));
+
+                    }
+                }
+            }
+        }
+    }
+
+    private Predicate negate(Predicate predicate, List<Constant> constants) {
         if(predicate.getArgument(0).toString().charAt(0)=='~')
-            return new Predicate(new Constant(predicate.getArgument(0).toString().substring(1), true), predicate.getArguments().subList(1, predicate.getArguments().size()));
-    return new Predicate(new Constant("~"+predicate.getArgument(0).toString(), true), predicate.getArguments().subList(1, predicate.getArguments().size()));
+            return new Predicate(ClausuresParser.getConstant(constants, predicate.getArgument(0).toString().substring(1)), predicate.getArguments().subList(1, predicate.getArguments().size()));
+    return new Predicate(ClausuresParser.getConstant(constants, "~"+predicate.getArgument(0).toString()), predicate.getArguments().subList(1, predicate.getArguments().size()));
     }
 
 

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
         List<Constant> constants;
         List<Variable> variables;
@@ -24,10 +25,10 @@ public class Main {
         ClausureSet knowledgeBase;
 
         ClausuresParser parser = new ClausuresParser();
-        constants = parser.getConstants("src/michal_example_constant.txt");
-        variables = parser.getVariables("src/michal_example_variables.txt");
-        predicateToProve = parser.getPredicateToProve("src/michal_to_prove.txt", constants, variables);
-        knowledgeBase = parser.getClausures("src/michal_example.txt", constants, variables);
+        constants = parser.getConstants("src/example_constant");
+        variables = parser.getVariables("src/example_variables");
+        predicateToProve = parser.getPredicateToProve("src/example_to_prove", constants, variables);
+        knowledgeBase = parser.getClausures("src/examples", constants, variables);
         extendKnowledgeBase(knowledgeBase, constants);
 
 
@@ -47,7 +48,7 @@ public class Main {
         {
             if(knowledgeBase.getClausures(i).hasPremise())
             {
-                ClausureSet allExtensions = knowledgeBase.getClausures(i).generateExtensions();
+                ClausureSet allExtensions = knowledgeBase.getClausures(i).generateExtensions(constants);
                 for(int k = 0; k<allExtensions.getClousuresCount(); k++)
                 {
                     if(!existsExtendedClausure(knowledgeBase, allExtensions.getClausures(k)))
@@ -69,8 +70,8 @@ public class Main {
                         }
                         else
                         {
-                            if(ClausuresParser.getConstant(constants, allExtensions.getClausures(k).getPremise().toString())==null)
-                                constants.add(new Constant(allExtensions.getClausures(k).getPremise().toString(), true));
+                            if(ClausuresParser.getConstant(constants, ((Predicate)allExtensions.getClausures(k).getPremise()).getArgument(0).toString())==null)
+                                constants.add(new Constant(((Predicate)allExtensions.getClausures(k).getPremise()).getArgument(0).toString(), true));
                         }
                     }//there is no Clausure like the generated one yet
                 }//for through all combinations
