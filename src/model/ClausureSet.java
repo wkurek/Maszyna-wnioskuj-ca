@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ClausureSet {
@@ -39,13 +40,39 @@ public class ClausureSet {
     public String toString() {
         if(clausures.isEmpty()) return "[]";
 
-        String string = "[";
-
+        String string = "";
         for(Clausure clausure : clausures) {
+            string = string.concat("K"+clausure.getID()+": ");
             string = string.concat(clausure.toString());
-            string = string.concat(",\n");
+            string = string.concat("\n");
         }
 
-        return string.substring(0, string.length() - 2).concat("]");
+        return string.substring(0, string.length() - 2).concat(")");
+    }
+
+    public String toString2() {
+        if(clausures.isEmpty()) return "[]";
+
+        String string = "";
+        for(Clausure clausure : clausures) {
+            string = string.concat("K"+clausure.getID()+": ");
+            string = string.concat(clausure.toString2());
+            string = string.concat("\n");
+        }
+
+        return string.substring(0, string.length() - 2).concat(")");
+    }
+
+    public String toString3(SubstitutionSet substitutionSet) {
+        if(clausures.isEmpty()) return "";
+        ArrayList<Clausure> reversed = new ArrayList<>(clausures);
+        Collections.reverse(reversed);
+        String string = "";
+        string=string.concat(((Clausure)reversed.get(0).replaceVariables(substitutionSet)).getConclusion().toString());
+        for(int i = 1; i<reversed.size(); i++) {
+            string=string.concat(" <= ");
+            string = string.concat(((Clausure)reversed.get(i).replaceVariables(substitutionSet)).getConclusion().toString());
+        }
+        return string;
     }
 }

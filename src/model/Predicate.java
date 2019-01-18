@@ -20,6 +20,18 @@ public class Predicate implements Unifable, Goal, Conclusion {
         this(name, Arrays.asList(args));
     }
 
+    public Predicate(Predicate old)
+    {
+        arguments = new ArrayList<>();
+        for(Unifable u : old.getArguments())
+        {
+            if(u instanceof Constant)
+                arguments.add(u);
+
+            else if(u instanceof Variable)
+                arguments.add(new Variable((Variable)u));
+        }
+    }
     private int getSize() {
         return arguments.size();
     }
@@ -65,9 +77,9 @@ public class Predicate implements Unifable, Goal, Conclusion {
 
     @Override
     public String toString() {
-        String string = "(";
+        String string = arguments.get(0).toString() + "(";
 
-        for(int i = 0; i < getSize(); ++i) {
+        for(int i = 1; i < getSize(); ++i) {
             string = string.concat(getArgument(i).toString());
             if(i != (getSize() - 1)) string = string.concat(", ");
         }
@@ -78,5 +90,9 @@ public class Predicate implements Unifable, Goal, Conclusion {
     @Override
     public Node getNode(SubstitutionSet substitutionSet, ClausureSet clausureSet) {
         return new PredicateNode(clausureSet, substitutionSet, this);
+    }
+
+    public ArrayList<Unifable> getArguments() {
+        return arguments;
     }
 }

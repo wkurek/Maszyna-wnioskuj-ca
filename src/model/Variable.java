@@ -14,9 +14,27 @@ public class Variable implements Unifable {
         this.name = name;
         this.id = idCounter++;
     }
+    public Variable(Variable v)
+    {
+        this.name = v.name;
+        this.id=v.id;
+    }
 
     public String getName() {
         return name;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public static int getIdCounter() {
+        return idCounter;
+    }
+
+
+    public static void setIdCounter(int idCounter) {
+        Variable.idCounter = idCounter;
     }
 
     @Override
@@ -37,14 +55,15 @@ public class Variable implements Unifable {
 
     @Override
     public Expression replaceVariables(SubstitutionSet substitutionSet) {
-        if(substitutionSet.isBound(this)) return substitutionSet.getBinding(this);
+        if(substitutionSet.isBound(this))
+            return substitutionSet.getBinding(this);
         else return this;
     }
 
     @Override
     public String toString() {
-        String string = "VAR_";
-        if(name != null) string = string.concat(name.toUpperCase());
+        String string = "";
+        if(name != null) string = string.concat(name);
 
         return string.concat("_" + id);
     }

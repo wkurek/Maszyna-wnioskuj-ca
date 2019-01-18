@@ -5,14 +5,34 @@ public class Constant implements Unifable {
 
     private int id;
     private String name;
+    private boolean predicateName;
 
     public Constant() {
         this.id = idCounter++;
     }
 
-    public Constant(String name) {
+    public Constant(String name, boolean predicateName) {
         this.name = name;
         this.id = idCounter++;
+        this.predicateName=predicateName;
+    }
+    public Constant(Constant con)
+    {
+        this.name = con.name;
+        this.id = con.id;
+        this.predicateName=con.predicateName;
+    }
+
+    public static int getIdCounter() {
+        return idCounter;
+    }
+
+    public static void setIdCounter(int idCounter) {
+        Constant.idCounter = idCounter;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -37,9 +57,12 @@ public class Constant implements Unifable {
 
     @Override
     public String toString() {
-        String string = "CONST_";
-        if(name != null) string = string.concat(name.toUpperCase());
+        String string = "";
+        if(name != null) string = string.concat(name);
 
-        return string.concat("_" + id);
+        if(!predicateName)
+            string+="_"+id;
+        return string;
     }
+
 }
