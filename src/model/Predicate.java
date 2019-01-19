@@ -44,7 +44,11 @@ public class Predicate implements Unifable, Goal, Conclusion {
     @Override
     public SubstitutionSet unify(Unifable expression, SubstitutionSet substitutionSet) {
         if((expression instanceof Predicate) && (((Predicate) expression).getSize() == getSize())) {
-            SubstitutionSet newSubstitutionSet = new SubstitutionSet(substitutionSet);
+            SubstitutionSet newSubstitutionSet;
+            if(substitutionSet==null)
+                newSubstitutionSet = new SubstitutionSet();
+            else
+                 newSubstitutionSet = new SubstitutionSet(substitutionSet);
 
             for(int i = 0; i < getSize(); ++i) {
                 Unifable unifiable1 = this.getArgument(i);

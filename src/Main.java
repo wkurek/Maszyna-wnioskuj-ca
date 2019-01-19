@@ -25,10 +25,10 @@ public class Main {
         ClausureSet knowledgeBase;
 
         ClausuresParser parser = new ClausuresParser();
-        constants = parser.getConstants("src/example_constant");
-        variables = parser.getVariables("src/example_variables");
-        predicateToProve = parser.getPredicateToProve("src/example_to_prove", constants, variables);
-        knowledgeBase = parser.getClausures("src/examples", constants, variables);
+        constants = parser.getConstants("src/1_constants.txt");
+        variables = parser.getVariables("src/1_variables.txt");
+        predicateToProve = parser.getPredicateToProve("src/1_to_prove.txt", constants, variables);
+        knowledgeBase = parser.getClausures("src/1_knowledge.txt", constants, variables);
         extendKnowledgeBase(knowledgeBase, constants);
 
 

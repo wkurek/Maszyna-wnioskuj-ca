@@ -55,8 +55,13 @@ public class Variable implements Unifable {
 
     @Override
     public Expression replaceVariables(SubstitutionSet substitutionSet) {
-        if(substitutionSet.isBound(this))
-            return substitutionSet.getBinding(this);
+        Expression substituted;
+        if(substitutionSet.isBound(this)) {
+            substituted = substitutionSet.getBinding(this);
+            while (substituted instanceof Variable && substitutionSet.isBound((Variable) substituted))
+                substituted = substitutionSet.getBinding((Variable)substituted);
+            return substituted;
+        }
         else return this;
     }
 

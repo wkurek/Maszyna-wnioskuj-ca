@@ -1,0 +1,15 @@
+TS
+~TS
+~ZAWOD
+ZAWOD
+HOBBY
+~HOBBY
+Abacki
+Babacki
+Cabacki
+Lekarz
+Inf
+Architekt
+Muzyka
+Szachy
+Wedka
