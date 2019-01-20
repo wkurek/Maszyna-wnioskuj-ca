@@ -1,5 +1,6 @@
 package model.graph;
 
+import javafx.util.Pair;
 import model.*;
 
 public class PredicateNode implements Node {
@@ -14,7 +15,10 @@ public class PredicateNode implements Node {
     }
 
     @Override
-    public SubstitutionSet getSolution(ClausureSet solutionClausureSet) {
+    public Pair<SubstitutionSet, ClausureSet> getSolution(ClausureSet solutionClausureSet) {
+        if(solutionClausureSet == null) solutionClausureSet = new ClausureSet();
+        final int startSolutionClausureSetCount = solutionClausureSet.getClousuresCount();
+
         for(int i = 0; i < clausureSet.getClousuresCount(); ++i) {
             Clausure clausure = clausureSet.getClausures(i);
             Conclusion conclusion = clausure.getConclusion();
@@ -22,27 +26,30 @@ public class PredicateNode implements Node {
             SubstitutionSet newSubstitutionSet = currentGoal.unify(conclusion, substitutionSet);
 
             if(newSubstitutionSet != null) {
-                if(!clausure.hasPremise()){
-                    if(solutionClausureSet == null) solutionClausureSet = new ClausureSet();
-                    solutionClausureSet.add(clausure);
-
-                    return newSubstitutionSet;
-                }
-
                 ClausureSet newClausureSet = new ClausureSet(clausureSet);
                 newClausureSet.remove(i);
 
-                SubstitutionSet result = clausure.getPremise().getNode(newSubstitutionSet, newClausureSet).getSolution(solutionClausureSet);
-                if(result != null) {
-                    if(solutionClausureSet == null)
-                        solutionClausureSet = new ClausureSet();
-
+                if(!clausure.hasPremise()){
                     solutionClausureSet.add(clausure);
+                    return new Pair<>(newSubstitutionSet, newClausureSet);
+                }
 
+                Pair<SubstitutionSet, ClausureSet> result = clausure.getPremise().getNode(newSubstitutionSet, newClausureSet).getSolution(solutionClausureSet);
+                if(result != null) {
+                    solutionClausureSet.add(clausure);
                     return result;
                 }
             }
+
+            if(solutionClausureSet.getClousuresCount() != startSolutionClausureSetCount) {
+                int diff = solutionClausureSet.getClousuresCount() - startSolutionClausureSetCount;
+                for(int j = 0; j < diff; ++j) {
+                    solutionClausureSet.remove(solutionClausureSet.getClousuresCount() - 1);
+                }
+            }
         }
+
+
 
         return null;
     }

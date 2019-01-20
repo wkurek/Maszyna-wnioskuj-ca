@@ -1,3 +1,4 @@
+import javafx.util.Pair;
 import model.*;
 import model.graph.AndNode;
 import model.graph.PredicateNode;
@@ -35,9 +36,17 @@ public class Main {
         SubstitutionSet substitutionSet = new SubstitutionSet();
         ClausureSet usedClausures = new ClausureSet();
 
-        substitutionSet = new PredicateNode(knowledgeBase, substitutionSet, predicateToProve).getSolution(usedClausures);
 
-        ResultPrinter.print(knowledgeBase, predicateToProve, usedClausures, substitutionSet);
+        Pair<SubstitutionSet, ClausureSet> result = new PredicateNode(knowledgeBase, substitutionSet, predicateToProve)
+                .getSolution(usedClausures);
+
+        if(result != null) {
+            substitutionSet = result.getKey();
+
+            ResultPrinter.print(knowledgeBase, predicateToProve, usedClausures, substitutionSet);
+        } else {
+            //TODO: print that algorithm cannot prove
+        }
 
         System.out.print("END");
     }
