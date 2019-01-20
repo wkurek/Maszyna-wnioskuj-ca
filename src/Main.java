@@ -8,6 +8,7 @@ import util.parser.ClausuresParser;
 import util.printer.ResultPrinter;
 
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 
 import static util.parser.KnowledgeBaseExtender.extendKnowledgeBase;
@@ -45,19 +46,19 @@ public class Main {
 
             if(result != null) {
                 //Argument proved by algorithm
-
                 substitutionSet = result.getKey();
 
                 ResultPrinter.print(knowledgeBase, predicateToBeProven, usedClausures, substitutionSet);
             } else {
                 //Argument not proved by algorithm
-                //TODO: print that algorithm cannot prove
                 System.out.println("Argument can not be proved by algorithm.");
             }
 
         } catch(ParameterException parameterException) {
             System.err.println(parameterException.getMessage());
             parameterException.getJCommander().usage();
+        } catch(NoSuchFileException fileException) {
+            System.err.println("Cannot found file:\t" + fileException.getFile());
         }
     }
 }
