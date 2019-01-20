@@ -26,10 +26,10 @@ public class Main {
         ClausureSet knowledgeBase;
 
         ClausuresParser parser = new ClausuresParser();
-        constants = parser.getConstants("src/1_constants.txt");
-        variables = parser.getVariables("src/1_variables.txt");
-        predicateToProve = parser.getPredicateToProve("src/1_to_prove.txt", constants, variables);
-        knowledgeBase = parser.getClausures("src/1_knowledge.txt", constants, variables);
+        constants = parser.getConstants("src/2_constants.txt");
+        variables = parser.getVariables("src/2_variables.txt");
+        predicateToProve = parser.getPredicateToProve("src/2_to_prove.txt", constants, variables);
+        knowledgeBase = parser.getClausures("src/2_knowledge.txt", constants, variables);
         extendKnowledgeBase(knowledgeBase, constants);
 
 
@@ -63,25 +63,7 @@ public class Main {
                     if(!existsExtendedClausure(knowledgeBase, allExtensions.getClausures(k)))
                     {
                         knowledgeBase.add(allExtensions.getClausures(k));
-                        if(ClausuresParser.getConstant(constants, allExtensions.getClausures(k).getConclusion().getArgument(0).toString())==null)
-                        {   //There is no negated predicate in constants (conclusion)
-                            constants.add(new Constant(allExtensions.getClausures(k).getConclusion().getArgument(0).toString(), true));
-                        }
-                        if(allExtensions.getClausures(k).getPremise() instanceof Operator) {
-                            for (int j = 0; j > ((Operator) allExtensions.getClausures(k).getPremise()).getOperandsCount(); j++)
-                            {
-                                if(ClausuresParser.getConstant(constants,((Operator)allExtensions.getClausures(k).getPremise()).getOperand(j).getArgument(0).toString())==null)
-                                //There is no negated predicate in constants (premise)
-                                {
-                                    constants.add(new Constant(((Operator)allExtensions.getClausures(k).getPremise()).getOperand(j).getArgument(0).toString(), true));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(ClausuresParser.getConstant(constants, ((Predicate)allExtensions.getClausures(k).getPremise()).getArgument(0).toString())==null)
-                                constants.add(new Constant(((Predicate)allExtensions.getClausures(k).getPremise()).getArgument(0).toString(), true));
-                        }
+
                     }//there is no Clausure like the generated one yet
                 }//for through all combinations
 

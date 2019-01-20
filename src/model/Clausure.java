@@ -153,9 +153,20 @@ public class Clausure implements Expression {
     }
 
     private Predicate negate(Predicate predicate, List<Constant> constants) {
-        if(predicate.getArgument(0).toString().charAt(0)=='~')
-            return new Predicate(ClausuresParser.getConstant(constants, predicate.getArgument(0).toString().substring(1)), predicate.getArguments().subList(1, predicate.getArguments().size()));
-    return new Predicate(ClausuresParser.getConstant(constants, "~"+predicate.getArgument(0).toString()), predicate.getArguments().subList(1, predicate.getArguments().size()));
+        if(predicate.getArgument(0).toString().charAt(0)=='~') {
+            Constant c = ClausuresParser.getConstant(constants, predicate.getArgument(0).toString().substring(1));
+            if (c != null)
+                return new Predicate(c, predicate.getArguments().subList(1, predicate.getArguments().size()));
+            c = new Constant( predicate.getArgument(0).toString().substring(1), true);
+            constants.add(c);
+            return new Predicate(c, predicate.getArguments().subList(1, predicate.getArguments().size()));
+        }
+        Constant c =  ClausuresParser.getConstant(constants, "~"+predicate.getArgument(0).toString());
+        if(c!=null)
+            return new Predicate(c, predicate.getArguments().subList(1, predicate.getArguments().size()));
+        c = new Constant("~"+predicate.getArgument(0).toString(),true);
+        constants.add(c);
+        return new Predicate(c, predicate.getArguments().subList(1, predicate.getArguments().size()));
     }
 
 

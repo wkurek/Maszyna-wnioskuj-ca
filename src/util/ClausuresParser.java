@@ -26,7 +26,7 @@ public class ClausuresParser implements Parser {
 
         List<Constant> resultSet = new ArrayList<>();
         for (String s : lines_constant) {
-            if(s.matches("[A-Z~]+$"))
+            if(s.matches("[A-Z~_]+$"))
                 resultSet.add(new Constant(s, true));
             else
                 resultSet.add(new Constant(s, false));
