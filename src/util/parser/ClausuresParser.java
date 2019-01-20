@@ -1,4 +1,4 @@
-package util;
+package util.parser;
 
 import model.*;
 import model.operator.AndOperator;

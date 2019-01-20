@@ -1,85 +1,65 @@
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import javafx.util.Pair;
 import model.*;
-import model.graph.AndNode;
 import model.graph.PredicateNode;
-import model.operator.AndOperator;
-import model.operator.NotOperator;
-import model.operator.Operator;
-import util.ClausuresParser;
+import util.arguments.Arguments;
+import util.parser.ClausuresParser;
 import util.printer.ResultPrinter;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
+
+import static util.parser.KnowledgeBaseExtender.extendKnowledgeBase;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        List<Constant> constants;
-        List<Variable> variables;
-        Predicate predicateToProve;
-        ClausureSet knowledgeBase;
+        try {
+            Arguments arguments = new Arguments();
 
-        ClausuresParser parser = new ClausuresParser();
-        constants = parser.getConstants("src/2_constants.txt");
-        variables = parser.getVariables("src/2_variables.txt");
-        predicateToProve = parser.getPredicateToProve("src/2_to_prove.txt", constants, variables);
-        knowledgeBase = parser.getClausures("src/2_knowledge.txt", constants, variables);
-        extendKnowledgeBase(knowledgeBase, constants);
+            JCommander.newBuilder()
+                    .addObject(arguments)
+                    .build()
+                    .parse(args);
 
+            //Read model defined in input files
+            ClausuresParser parser = new ClausuresParser();
 
-        SubstitutionSet substitutionSet = new SubstitutionSet();
-        ClausureSet usedClausures = new ClausureSet();
+            List<Constant> constants = parser.getConstants(arguments.constantsFilePath);
+            List<Variable> variables = parser.getVariables(arguments.variablesFilePath);
+            Predicate predicateToBeProven = parser.getPredicateToProve(arguments.argumentFilePath,
+                    constants, variables);
 
+            ClausureSet knowledgeBase = parser.getClausures(arguments.knowledgeBaseFilePath,
+                    constants, variables);
+            extendKnowledgeBase(knowledgeBase, constants);
 
-        Pair<SubstitutionSet, ClausureSet> result = new PredicateNode(knowledgeBase, substitutionSet, predicateToProve)
-                .getSolution(usedClausures);
+            //Prove using algorithm
+            SubstitutionSet substitutionSet = new SubstitutionSet();
+            ClausureSet usedClausures = new ClausureSet();
 
-        if(result != null) {
-            substitutionSet = result.getKey();
+            Pair<SubstitutionSet, ClausureSet> result = new PredicateNode(knowledgeBase,
+                    substitutionSet, predicateToBeProven)
+                    .getSolution(usedClausures);
 
-            ResultPrinter.print(knowledgeBase, predicateToProve, usedClausures, substitutionSet);
-        } else {
-            //TODO: print that algorithm cannot prove
+            if(result != null) {
+                //Argument proved by algorithm
+                substitutionSet = result.getKey();
+
+                ResultPrinter.print(knowledgeBase, predicateToBeProven, usedClausures, substitutionSet);
+            } else {
+                //Argument not proved by algorithm
+                System.out.println("Argument can not be proved by algorithm.");
+            }
+
+        } catch(ParameterException parameterException) {
+            System.err.println(parameterException.getMessage());
+            parameterException.getJCommander().usage();
+        } catch(NoSuchFileException fileException) {
+            System.err.println("Cannot found file:\t" + fileException.getFile());
         }
-
-        System.out.print("END");
     }
-
-    private static void extendKnowledgeBase(ClausureSet knowledgeBase, List<Constant> constants) {//A=>B, więc trzeba dodać -B=>-A
-        int end = knowledgeBase.getClousuresCount();
-        for(int i = 0; i<end; i++)
-        {
-            if(knowledgeBase.getClausures(i).hasPremise())
-            {
-                ClausureSet allExtensions = knowledgeBase.getClausures(i).generateExtensions(constants);
-                for(int k = 0; k<allExtensions.getClousuresCount(); k++)
-                {
-                    if(!existsExtendedClausure(knowledgeBase, allExtensions.getClausures(k)))
-                    {
-                        knowledgeBase.add(allExtensions.getClausures(k));
-
-                    }//there is no Clausure like the generated one yet
-                }//for through all combinations
-
-            }//if hasPremise
-        }//for knowledgeSet
-    }
-
-    private static boolean existsExtendedClausure(ClausureSet knowledgeBase, Clausure clausure) {
-        for(int i = 0; i<knowledgeBase.getClousuresCount(); i++)
-        {
-            if(clausure.sameAs(knowledgeBase.getClausures(i)))
-                return true;
-        }
-        return false;
-    }
-
-
 }
 
