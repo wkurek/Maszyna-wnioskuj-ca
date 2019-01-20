@@ -1,6 +1,9 @@
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import javafx.util.Pair;
 import model.*;
 import model.graph.PredicateNode;
+import util.arguments.Arguments;
 import util.parser.ClausuresParser;
 import util.printer.ResultPrinter;
 
@@ -10,35 +13,50 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        List<Constant> constants;
-        List<Variable> variables;
-        Predicate predicateToProve;
-        ClausureSet knowledgeBase;
+        try {
+            Arguments arguments = new Arguments();
 
-        ClausuresParser parser = new ClausuresParser();
-        constants = parser.getConstants("src/2_constants.txt");
-        variables = parser.getVariables("src/2_variables.txt");
-        predicateToProve = parser.getPredicateToProve("src/2_to_prove.txt", constants, variables);
-        knowledgeBase = parser.getClausures("src/2_knowledge.txt", constants, variables);
-        extendKnowledgeBase(knowledgeBase, constants);
+            JCommander.newBuilder()
+                    .addObject(arguments)
+                    .build()
+                    .parse(args);
 
+            //Read model defined in input files
+            ClausuresParser parser = new ClausuresParser();
 
-        SubstitutionSet substitutionSet = new SubstitutionSet();
-        ClausureSet usedClausures = new ClausureSet();
+            List<Constant> constants = parser.getConstants(arguments.constantsFilePath);
+            List<Variable> variables = parser.getVariables(arguments.variablesFilePath);
+            Predicate predicateToBeProven = parser.getPredicateToProve(arguments.argumentFilePath,
+                    constants, variables);
 
+            ClausureSet knowledgeBase = parser.getClausures(arguments.knowledgeBaseFilePath,
+                    constants, variables);
+            extendKnowledgeBase(knowledgeBase, constants);
 
-        Pair<SubstitutionSet, ClausureSet> result = new PredicateNode(knowledgeBase, substitutionSet, predicateToProve)
-                .getSolution(usedClausures);
+            //Prove using algorithm
+            SubstitutionSet substitutionSet = new SubstitutionSet();
+            ClausureSet usedClausures = new ClausureSet();
 
-        if(result != null) {
-            substitutionSet = result.getKey();
+            Pair<SubstitutionSet, ClausureSet> result = new PredicateNode(knowledgeBase,
+                    substitutionSet, predicateToBeProven)
+                    .getSolution(usedClausures);
 
-            ResultPrinter.print(knowledgeBase, predicateToProve, usedClausures, substitutionSet);
-        } else {
-            //TODO: print that algorithm cannot prove
+            if(result != null) {
+                //Argument proved by algorithm
+
+                substitutionSet = result.getKey();
+
+                ResultPrinter.print(knowledgeBase, predicateToBeProven, usedClausures, substitutionSet);
+            } else {
+                //Argument not proved by algorithm
+                //TODO: print that algorithm cannot prove
+                System.out.println("Argument can not be proved by algorithm.");
+            }
+
+        } catch(ParameterException parameterException) {
+            System.err.println(parameterException.getMessage());
+            parameterException.getJCommander().usage();
         }
-
-        System.out.print("END");
     }
 
     private static void extendKnowledgeBase(ClausureSet knowledgeBase, List<Constant> constants) {//A=>B, więc trzeba dodać -B=>-A
