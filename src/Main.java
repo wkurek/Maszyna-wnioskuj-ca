@@ -15,7 +15,7 @@ import static util.parser.KnowledgeBaseExtender.extendKnowledgeBase;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         try {
             Arguments arguments = new Arguments();
 
@@ -28,12 +28,20 @@ public class Main {
             ClausuresParser parser = new ClausuresParser();
 
             List<Constant> constants = parser.getConstants(arguments.constantsFilePath);
+            if(constants==null)
+                return;
             List<Variable> variables = parser.getVariables(arguments.variablesFilePath);
+            if(variables==null)
+                return;
             Predicate predicateToBeProven = parser.getPredicateToProve(arguments.argumentFilePath,
                     constants, variables);
+            if(predicateToBeProven==null)
+                return;
 
             ClausureSet knowledgeBase = parser.getClausures(arguments.knowledgeBaseFilePath,
                     constants, variables);
+            if(knowledgeBase==null)
+                return;
             extendKnowledgeBase(knowledgeBase, constants);
 
             //Prove using algorithm
@@ -58,8 +66,11 @@ public class Main {
             System.err.println(parameterException.getMessage());
             parameterException.getJCommander().usage();
         } catch(NoSuchFileException fileException) {
-            System.err.println("Cannot found file:\t" + fileException.getFile());
+            System.err.println("Cannot find file:\t" + fileException.getFile());
+        } catch (IOException e){
+            System.err.println("Input file error:\t"+e.getMessage());
         }
+
     }
 }
 

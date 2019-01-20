@@ -1,0 +1,13 @@
+OSOBA
+KOSZYKARZ
+CIEZAROWIEC
+RODZIC
+~RODZIC
+Wzrost
+Wysoki
+Niski
+Wiek
+Mlody
+Stary
+Tata
+Syn
