@@ -1,20 +1,10 @@
 import javafx.util.Pair;
 import model.*;
-import model.graph.AndNode;
 import model.graph.PredicateNode;
-import model.operator.AndOperator;
-import model.operator.NotOperator;
-import model.operator.Operator;
-import util.ClausuresParser;
+import util.parser.ClausuresParser;
 import util.printer.ResultPrinter;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {

@@ -2,7 +2,7 @@ package model;
 
 import model.operator.AndOperator;
 import model.operator.Operator;
-import util.ClausuresParser;
+import util.parser.ClausuresParser;
 
 import java.util.ArrayList;
 import java.util.List;
