@@ -1,3 +1,4 @@
+import javafx.util.Pair;
 import model.*;
 import model.graph.AndNode;
 import model.graph.PredicateNode;
@@ -25,19 +26,27 @@ public class Main {
         ClausureSet knowledgeBase;
 
         ClausuresParser parser = new ClausuresParser();
-        constants = parser.getConstants("src/example_constant");
-        variables = parser.getVariables("src/example_variables");
-        predicateToProve = parser.getPredicateToProve("src/example_to_prove", constants, variables);
-        knowledgeBase = parser.getClausures("src/examples", constants, variables);
+        constants = parser.getConstants("src/2_constants.txt");
+        variables = parser.getVariables("src/2_variables.txt");
+        predicateToProve = parser.getPredicateToProve("src/2_to_prove.txt", constants, variables);
+        knowledgeBase = parser.getClausures("src/2_knowledge.txt", constants, variables);
         extendKnowledgeBase(knowledgeBase, constants);
 
 
         SubstitutionSet substitutionSet = new SubstitutionSet();
         ClausureSet usedClausures = new ClausureSet();
 
-        substitutionSet = new PredicateNode(knowledgeBase, substitutionSet, predicateToProve).getSolution(usedClausures);
 
-        ResultPrinter.print(knowledgeBase, predicateToProve, usedClausures, substitutionSet);
+        Pair<SubstitutionSet, ClausureSet> result = new PredicateNode(knowledgeBase, substitutionSet, predicateToProve)
+                .getSolution(usedClausures);
+
+        if(result != null) {
+            substitutionSet = result.getKey();
+
+            ResultPrinter.print(knowledgeBase, predicateToProve, usedClausures, substitutionSet);
+        } else {
+            //TODO: print that algorithm cannot prove
+        }
 
         System.out.print("END");
     }
@@ -54,25 +63,7 @@ public class Main {
                     if(!existsExtendedClausure(knowledgeBase, allExtensions.getClausures(k)))
                     {
                         knowledgeBase.add(allExtensions.getClausures(k));
-                        if(ClausuresParser.getConstant(constants, allExtensions.getClausures(k).getConclusion().getArgument(0).toString())==null)
-                        {   //There is no negated predicate in constants (conclusion)
-                            constants.add(new Constant(allExtensions.getClausures(k).getConclusion().getArgument(0).toString(), true));
-                        }
-                        if(allExtensions.getClausures(k).getPremise() instanceof Operator) {
-                            for (int j = 0; j > ((Operator) allExtensions.getClausures(k).getPremise()).getOperandsCount(); j++)
-                            {
-                                if(ClausuresParser.getConstant(constants,((Operator)allExtensions.getClausures(k).getPremise()).getOperand(j).getArgument(0).toString())==null)
-                                //There is no negated predicate in constants (premise)
-                                {
-                                    constants.add(new Constant(((Operator)allExtensions.getClausures(k).getPremise()).getOperand(j).getArgument(0).toString(), true));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(ClausuresParser.getConstant(constants, ((Predicate)allExtensions.getClausures(k).getPremise()).getArgument(0).toString())==null)
-                                constants.add(new Constant(((Predicate)allExtensions.getClausures(k).getPremise()).getArgument(0).toString(), true));
-                        }
+
                     }//there is no Clausure like the generated one yet
                 }//for through all combinations
 
