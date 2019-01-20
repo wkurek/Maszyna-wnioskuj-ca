@@ -1,10 +1,10 @@
-# Maszyna wnioskująca
+# Maszyna wnioskująca :link:
 
-## Treść zadania
+## Treść zadania :page_with_curl:
 
 Napisać program, który przyjmuje: - formuły koniunkcyjno-implikacyjne bez negacji w rachunku predykatów pierwszego rzędu, - tezę do udowodnienia. Następnie, sprowadza formuły do postaci klauzul, dalej do formuł koniunkcyjno-implikacyjnych i przeprowadza wnioskowanie wstecz dowodzące zadanej tezy. Program może nie obsługiwać funkcji, czyli może nie akceptować formuł postaci PRED(F(x)). Wynik wnioskowania zostaje zademonstrowany graficznie.
 
-## Opis projektu
+## Opis projektu ✏
 
 Projekt zakłada napisanie programu odczytującego formuły koniunkcyjno-implikacyjne z pliku tekstowego oraz dający w rezultacie swojego działania tekstowo-graficzną reprezentację wynikowego grafu powstałego w ramach procedury wnioskowania wstecz przeprowadzonego na podstawie odczytanych formuł koniunkcyjno-implikacyjnych. Formuły koniunkcyjno-implikacyjne mają być zapisane za pomocą specjalnej notacji tekstowej pozwalającej reprezentować m.in. symbol implikacji (=>) oraz symbol koniunkcji (^).
 
@@ -16,7 +16,22 @@ Implementacja algorytmu wnioskowania wstecz zakłada wykorzystanie struktury gra
 
 Program na wyjściu drukuje wynikowy graf powstały w ramach przebiegu algorytmu. Istnieje konieczność zapewnienia możliwości znakowej reprezentacji poszczególnych węzłów grafu wynikowego. Wynik programu ma być wyświetlony w jak najprostszej i czytelnej dla użytkownika końcowego formie.
 
-## Milestones
+## Uruchomienie ▶
+
+Program przyjmuje dane od użytkownika w formie paramterów uruchomieniowych cztery parametry.
+
+- Baza wiedzy w postaci formuł koniunkcyjno-implikacyjnych. Baza wiedzy jest przekazywana w formie pliku, do którego ścieżkę przekazujemy programowi parametrem `-knowledgeBase`. Kolejne formuły pisane jedna pod drugą. Implikacja oznaczona poprzez symbol **=>**.
+- Użyte w bazie wiedzy stałe (w tym nazwy predykatów). Stałe są przekazywane w formie pliku, do którego ścieżkę przekazujemy programowi parametrem `-const` lub `-constants`. Kolejne stałe są pisane w pliku jedna pod drugą.
+- Użyte w bazie wiedzy zmienne. Zmienne są przekazywane w formie pliku, do którego ścieżkę przekazujemy programowi parametrem `-var` lub `-variables`. Kolejne zmienne są pisane w pliku jedna pod drugą.
+- Teza do udowodnienia przez algorytm.Teza jest przekazywana w formie pliku, do którego ścieżkę przekazujemy programowi parametrem `-arg` lub `-argument`. Waże by stałe oraz nazwa predykatu użye w tezie były również uwzględnione w plikach ze stałymi.
+
+Przykład:
+
+```sh
+$ java -jar ./MaszynaWnioskujaca.jar -knowledgeBase knowledge_base.txt -var variables.txt -const constants.txt -arg argument.txt
+```
+
+## Milestones :mount_fuji:
 
 - Opracowanie koncepcji obiektowej reprezentacji formuł koniunkcyjno-implikacyjnych
 - Opracowanie koncepcji implementacji algorytmu wnioskowania wstecz
