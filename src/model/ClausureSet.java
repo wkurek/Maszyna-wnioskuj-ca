@@ -1,5 +1,7 @@
 package model;
 
+import model.operator.AndOperator;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,11 +70,21 @@ public class ClausureSet {
         ArrayList<Clausure> reversed = new ArrayList<>(clausures);
         Collections.reverse(reversed);
         String string = "";
-        string=string.concat(((Clausure)reversed.get(0).replaceVariables(substitutionSet)).getConclusion().toString());
+        string=string.concat("("+((Clausure)reversed.get(0).replaceVariables(substitutionSet)).getConclusion().toString() + ") \n\t^\n\t|\n(" + ((Clausure)reversed.get(0).replaceVariables(substitutionSet)).getPremise().toString()+")");
         for(int i = 1; i<reversed.size(); i++) {
-            string=string.concat(" <= ");
-            string = string.concat(((Clausure)reversed.get(i).replaceVariables(substitutionSet)).getConclusion().toString());
+            if(((Clausure)reversed.get(i).replaceVariables(substitutionSet)).hasPremise()) {
+                string = string.concat("\n\t^\n\t|\n");
+                string = string.concat("("+((Clausure) reversed.get(i).replaceVariables(substitutionSet)).getPremise().toString()+")");
+            }
+            else
+            {
+                if(!(((Clausure) reversed.get(i-1).replaceVariables(substitutionSet)).hasPremise()) || (((Clausure) reversed.get(i-1).replaceVariables(substitutionSet)).getPremise() instanceof AndOperator)) {
+                    string = string.concat("\n\t^\n\t|\n");
+                    string = string.concat("(" + ((Clausure) reversed.get(i).replaceVariables(substitutionSet)).getConclusion().toString() + ")");
+                }
+            }
         }
+       // string = string.replaceAll("(.{190})", "$1\n\n");
         return string;
     }
 }

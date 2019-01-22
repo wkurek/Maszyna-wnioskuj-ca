@@ -1,11 +1,12 @@
 package util.printer;
 
 import model.ClausureSet;
+import model.Goal;
 import model.Predicate;
 import model.SubstitutionSet;
 
 public class ResultPrinter {
-    public static void print(ClausureSet knowledgeBase, Predicate predicateToProve, ClausureSet usedClausures, SubstitutionSet substitutionSet) {
+    public static void print(ClausureSet knowledgeBase, Goal predicateToProve, ClausureSet usedClausures, SubstitutionSet substitutionSet) {
         //TODO: Implement this method
         System.out.println("Baza wiedzy:\n"+knowledgeBase.toString2());
         System.out.println("\nTeza: "+predicateToProve.toString());
