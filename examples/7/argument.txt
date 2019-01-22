@@ -1,0 +1,1 @@
+EATS(Animal1,Animal2)
