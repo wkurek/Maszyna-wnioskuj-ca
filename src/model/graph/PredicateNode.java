@@ -27,7 +27,8 @@ public class PredicateNode implements Node {
 
             if(newSubstitutionSet != null) {
                 ClausureSet newClausureSet = new ClausureSet(clausureSet);
-                newClausureSet.remove(i);
+                if(clausure.hasPremise())
+                    newClausureSet.remove(i);
 
                 if(!clausure.hasPremise()){
                     solutionClausureSet.add(clausure);

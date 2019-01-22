@@ -28,7 +28,8 @@ public class AndNode implements Node {
 
             if(newSubstitutionSet != null) {
                 ClausureSet newClausureSet = new ClausureSet(clausureSet);
-                newClausureSet.remove(i);
+                if(clausure.hasPremise())
+                    newClausureSet.remove(i);
 
                 Pair<SubstitutionSet, ClausureSet> result = currentGoal.getTailOperator()
                         .getNode(newSubstitutionSet, newClausureSet)
