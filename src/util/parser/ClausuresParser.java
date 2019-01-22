@@ -93,6 +93,8 @@ public class ClausuresParser implements Parser {
     public Predicate getPredicateToProve(String filePath, List<Constant> constants, List<Variable> variables) throws IOException {
         String filePath_to_prove = new File(filePath).getAbsolutePath();
         String toProveString = Files.readAllLines(Paths.get(filePath_to_prove)).get(0);
+        while (toProveString.charAt(0)=='(')
+            toProveString=toProveString.substring(1);
         String[] splitted_line_to_prove = toProveString.split("[(),]");
         Constant predicate_name = getConstant(constants, splitted_line_to_prove[0]);
         if(predicate_name==null)
@@ -145,7 +147,7 @@ public class ClausuresParser implements Parser {
                 String[] splitted_predicates = premise_line.split("[\\^]");
 
                 for (String s : splitted_predicates) {
-                    if(s.charAt(0)=='(')
+                    while (s.charAt(0)=='(')
                         s=s.substring(1);
                     String[] expressions = s.split("[(),]");
                     Constant predicate_name = getConstant(constants, expressions[0]);
