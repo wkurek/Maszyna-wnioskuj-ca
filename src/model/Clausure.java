@@ -179,6 +179,8 @@ public class Clausure implements Expression {
             {
                 if(!(clausure.getPremise() instanceof Operator))
                     return false;
+                if(((Operator) this.getPremise()).getOperandsCount()!=((Operator) clausure.getPremise()).getOperandsCount())
+                    return false;
                 for(int i = 0; i<((Operator) this.getPremise()).getOperandsCount(); i++)
                 {
                     if(!(((Operator) this.getPremise()).getOperand(i).getArgument(0).toString()
